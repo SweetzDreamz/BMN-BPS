@@ -20,8 +20,6 @@
 						<th>Nama</th>
 						<th>Jabatan</th>
 						<th>Golongan Akhir</th>
-						<th>Email (BPS)</th>
-						<th>Email (Gmail)</th>
 						<th>Role</th>
 						<th>Aksi</th>
 					</tr>
@@ -52,12 +50,6 @@
 						</td>
 						<td>
 							<?php echo $data['Golongan Akhir']; ?>
-						</td>
-						<td>
-							<?php echo $data['Alamat Email BPS']; ?>
-						</td>
-						<td>
-							<?php echo $data['Alamat Gmail']; ?>
 						</td>
 						<td>
 							<?php echo $data['Role']; ?>

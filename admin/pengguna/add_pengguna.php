@@ -1,130 +1,263 @@
 <div class="card card-primary">
 	<div class="card-header">
 		<h3 class="card-title">
-			<i class="fa fa-edit"></i> Tambah Akses</h3>
+			<i class="fa fa-edit"></i> Tambah Akses
+		</h3>
 	</div>
+
 	<form action="" method="post" enctype="multipart/form-data">
 		<div class="card-body">
 
-			<div class="form-group row">
-				<label class="col-sm-2 col-form-label">NIP</label>
-				<div class="col-sm-6">
-					<input type="text" class="form-control" id="NIP" name="NIP" placeholder="NIP" required>
+			<!-- NIP dan NIP Lama -->
+			<div class="form-row">
+				<div class="form-group col-md-6">
+					<label for="NIP">NIP</label>
+					<input type="text" class="form-control" id="NIP" name="NIP" placeholder="Masukkan NIP" required>
+				</div>
+
+				<div class="form-group col-md-6">
+					<label for="nip_lama">NIP Lama</label>
+					<input type="text" class="form-control" id="nip_lama" name="nip_lama" placeholder="Masukkan NIP Lama" required>
 				</div>
 			</div>
 
-			<div class="form-group row">
-				<label class="col-sm-2 col-form-label">NIP Lama</label>
-				<div class="col-sm-6">
-					<input type="text" class="form-control" id="NIP Lama" name="nip_lama" placeholder="NIP Lama" required>
-				</div>
+			<!-- Nama -->
+			<div class="form-group">
+				<label for="nama">Nama</label>
+				<input type="text" class="form-control" id="nama" name="nama" placeholder="Masukkan Nama" required>
 			</div>
 
-			<div class="form-group row">
-				<label class="col-sm-2 col-form-label">Nama</label>
-				<div class="col-sm-6">
-					<input type="text" class="form-control" id="nama" name="nama" placeholder="nama" required>
+			<!-- Jabatan dan Golongan Akhir -->
+			<div class="form-row">
+				<div class="form-group col-md-6">
+					<label for="jabatan">Jabatan</label>
+					<select name="jabatan" id="jabatan" class="form-control" required>
+						<option value="">- Pilih -</option>
+						<option>Kepala BPS Kabupaten/Kota</option>
+						<option>Statistisi Ahli Madya</option>
+						<option>Kepala Subbagian Umum</option>
+						<option>Staf Subbagian Tata Usaha</option>
+						<option>Statistisi Ahli Pertama</option>
+						<option>Statistisi Ahli Muda</option>
+						<option>Statistisi Penyelia</option>
+						<option>Pranata Komputer Ahli Muda</option>
+						<option>Pelaksana</option>
+						<option>PK APBN Terampil</option>
+					</select>
 				</div>
-			</div>
 
-			<div class="form-group row">
-				<label class="col-sm-2 col-form-label">Jabatan</label>
-				<div class="col-sm-6">
-						<select name="jabatan" id="jabatan" class="form-control" required>
-							<option>- Pilih -</option>
-							<option>Kepala BPS Kabupaten/Kota</option>
-							<option>Statistisi Ahli Madya</option>
-							<option>Kepala Subbagian Umum</option>
-							<option>Staf Subbagian Tata Usaha</option>
-							<option>Statistisi Ahli Pertama</option>
-							<option>Statistisi Ahli Muda</option>
-							<option>Statistisi Penyelia</option>
-							<option>Pranata Komputer Ahli Muda</option>
-							<option>Pelaksana</option>
-							<option>PK APBN Terampil</option>
-						</select>
-				</div>
-			</div>
-
-			<div class="form-group row">
-				<label class="col-sm-2 col-form-label">Golongan Akhir</label>
-				<div class="col-sm-6">
-						<select name="golongan_akhir" id="golongan Akhir" class="form-control" required>
-							<option>- Pilih -</option>
-							<optgroup label="Golongan I">
-								<option>I/a</option>
-								<option>I/b</option>
-								<option>I/c</option>
-								<option>I/d</option>
-							</optgroup>
-
-							<optgroup label="Golongan II">
-								<option>II/a</option>
-								<option>II/b</option>
-								<option>II/c</option>
-								<option>II/d</option>
-							</optgroup>
-
-							<optgroup label="Golongan III">
-								<option>III/a</option>
-								<option>III/b</option>
-								<option>III/c</option>
-								<option>III/d</option>
-							</optgroup>
-
-							<optgroup label="Golongan IV">
-								<option>IV/a</option>
-								<option>IV/b</option>
-								<option>IV/c</option>
-								<option>IV/d</option>
-								<option>IV/e</option>
-							</optgroup>
-						</select>
-				</div>
-			</div>
-
-			<div class="form-group row">
-				<label class="col-sm-2 col-form-label">Alamat Email (BPS)</label>
-				<div class="col-sm-6">
-					<input type="email" class="form-control" id="email bps" name="email_bps" placeholder="Email BPS" required>
-				</div>
-			</div>
-
-			<div class="form-group row">
-				<label class="col-sm-2 col-form-label">Alamat Email (Pribadi)</label>
-				<div class="col-sm-6">
-					<input type="email" class="form-control" id="email gmail" name="email_gmail" placeholder="Email Pribadi" required>
-				</div>
-			</div>
-
-			<div class="form-group row">
-				<label class="col-sm-2 col-form-label">Password</label>
-				<div class="col-sm-6">
-					<input type="password" class="form-control" id="password" name="password" placeholder="password" required>
-				</div>
-			</div>
-
-			<div class="form-group row">
-				<label class="col-sm-2 col-form-label">Role</label>
-				<div class="col-sm-6">
-					<select name="role" id="role" class="form-control" required>
-							<option>- Pilih -</option>
-							<option>Kepala BPS Kabupaten/Kota</option>
-							<option>Pengurus BMN</option>
-							<option>Kasubbag</option>
-							<option>IPDS</option>
-							<option>Pengguna</option>
+				<div class="form-group col-md-6">
+					<label for="golongan_akhir">Golongan Akhir</label>
+					<select name="golongan_akhir" id="golongan_akhir" class="form-control" required>
+						<option value="">- Pilih -</option>
+						<optgroup label="Golongan I">
+							<option>I/a</option>
+							<option>I/b</option>
+							<option>I/c</option>
+							<option>I/d</option>
+						</optgroup>
+						<optgroup label="Golongan II">
+							<option>II/a</option>
+							<option>II/b</option>
+							<option>II/c</option>
+							<option>II/d</option>
+						</optgroup>
+						<optgroup label="Golongan III">
+							<option>III/a</option>
+							<option>III/b</option>
+							<option>III/c</option>
+							<option>III/d</option>
+						</optgroup>
+						<optgroup label="Golongan IV">
+							<option>IV/a</option>
+							<option>IV/b</option>
+							<option>IV/c</option>
+							<option>IV/d</option>
+							<option>IV/e</option>
+						</optgroup>
 					</select>
 				</div>
 			</div>
 
+			<!-- Email BPS dan Email Pribadi -->
+			<div class="form-row">
+				<div class="form-group col-md-6">
+					<label for="email_bps">Alamat Email (BPS)</label>
+					<input type="email" class="form-control" id="email_bps" name="email_bps" placeholder="Masukkan Email BPS" required>
+				</div>
+
+				<div class="form-group col-md-6">
+					<label for="email_gmail">Alamat Email (Pribadi)</label>
+					<input type="email" class="form-control" id="email_gmail" name="email_gmail" placeholder="Masukkan Email Pribadi" required>
+				</div>
+			</div>
+
+			<!-- Password -->
+			<div class="form-group">
+				<label for="password">Password</label>
+				<input type="password" class="form-control" id="password" name="password" placeholder="Masukkan Password" required>
+			</div>
+
+			<!-- Role -->
+			<div class="form-group">
+				<label for="role">Role</label>
+				<select name="role" id="role" class="form-control" required>
+					<option value="">- Pilih -</option>
+					<option>Kepala BPS Kabupaten/Kota</option>
+					<option>Pengurus BMN</option>
+					<option>Kasubbag</option>
+					<option>IPDS</option>
+					<option>Pengguna</option>
+				</select>
+			</div>
+
 		</div>
-		<div class="card-footer">
+
+		<div class="card-footer text-right">
 			<input type="submit" name="Simpan" value="Simpan" class="btn btn-info">
-			<a href="?page=data-pengguna" title="Kembali" class="btn btn-secondary">Batal</a>
+			<a href="?page=data-pengguna" class="btn btn-secondary">Batal</a>
 		</div>
 	</form>
 </div>
+
+<style>
+
+/* ====== CARD STYLE ====== */
+.card.card-info {
+    border-radius: 12px;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+    border: none;
+}
+
+.card-header {
+    background: linear-gradient(135deg, #007bff, #00a0ff);
+    color: white;
+    border-top-left-radius: 12px;
+    border-top-right-radius: 12px;
+    padding: 16px 20px;
+}
+
+.card-header h3 {
+    font-weight: 600;
+    margin: 0;
+}
+
+/* ====== FORM STRUCTURE ====== */
+.form-group label {
+    font-weight: 500;
+    color: #343a40;
+    margin-bottom: 6px;
+    display: block;
+    transition: color 0.2s ease;
+}
+
+.form-control,
+.select2-container--default .select2-selection--single {
+    border: 1.5px solid #ced4da;
+    border-radius: 8px !important;
+    transition: all 0.25s ease;
+    padding: 10px 12px;
+    font-size: 15px;
+}
+
+/* Fokus input */
+.form-control:focus,
+.select2-container--default .select2-selection--single:focus,
+.select2-container--default.select2-container--focus .select2-selection--single {
+    border-color: #007bff !important;
+    box-shadow: 0 0 0 4px rgba(0, 123, 255, 0.15);
+}
+
+/* Label berubah warna saat input aktif */
+.form-group:focus-within label {
+    color: #007bff;
+}
+
+/* Jarak antar input */
+.form-group,
+.form-row {
+    margin-bottom: 18px;
+}
+
+/* Checkbox modern */
+.form-check-label {
+    font-weight: 500;
+}
+.form-check-input {
+    transform: scale(1.2);
+    margin-right: 8px;
+}
+
+/* Tombol footer */
+.card-footer {
+    border-top: 1px solid #dee2e6;
+    background-color: #f8f9fa;
+    border-bottom-left-radius: 12px;
+    border-bottom-right-radius: 12px;
+    padding: 14px 20px;
+}
+
+.btn-info {
+    background: linear-gradient(135deg, #007bff, #00a0ff);
+    border: none;
+    border-radius: 8px;
+    padding: 10px 18px;
+    font-weight: 500;
+    transition: all 0.2s ease;
+}
+.btn-info:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 3px 10px rgba(0, 123, 255, 0.4);
+}
+
+.btn-secondary {
+    border-radius: 8px;
+    padding: 10px 18px;
+}
+
+/* ====== SELECT2 CUSTOM STYLE ====== */
+.select2-container--default .select2-selection--single {
+    height: 42px !important;
+    display: flex;
+    align-items: center;
+}
+.select2-container--default .select2-selection__rendered {
+    line-height: 30px !important;
+    padding-left: 8px;
+}
+.select2-container--default .select2-selection__arrow {
+    height: 40px !important;
+}
+
+/* Placeholder warna abu lembut */
+::placeholder {
+    color: #adb5bd !important;
+}
+
+/* Responsif */
+@media (max-width: 768px) {
+    .form-row {
+        flex-direction: column;
+    }
+}
+</style>
+
+<script>
+// Animasi lembut ketika field aktif
+$(document).ready(function() {
+    $('input, textarea, select').on('focus', function() {
+        $(this).closest('.form-group').addClass('active-group');
+    }).on('blur', function() {
+        $(this).closest('.form-group').removeClass('active-group');
+    });
+});
+</script>
+
+<style>
+.active-group label {
+    color: #007bff !important;
+}
+</style>
 
 <?php
 
