@@ -129,15 +129,22 @@ $data_proses = mysqli_fetch_array($sql_dalam_pengerjaan);
             </div>
 
             <?php
-            // Ambil daftar bulan unik dari tabel tiket
-            $sql_bulan = mysqli_query($konek, "
-                SELECT DISTINCT DATE_FORMAT(tanggal, '%Y-%m') AS bulan
-                FROM tabel_tiket
-                ORDER BY bulan DESC
-            ");
 
-            // Bulan yang dipilih (default: bulan ini)
+                        // Bulan yang dipilih (default: bulan ini)
             $selected_month = isset($_GET['bulan']) ? $_GET['bulan'] : date('Y-m');
+            // Ambil tahun saat ini dari bulan terpilih
+            $tahun_ini = date('Y', strtotime($selected_month . "-01"));
+
+            // Buat daftar seluruh bulan (1–12)
+            $bulan_list = [];
+            for ($i = 1; $i <= 12; $i++) {
+                $bulan_list[] = [
+                    'value' => $tahun_ini . '-' . str_pad($i, 2, '0', STR_PAD_LEFT),
+                    'nama' => date("F Y", strtotime($tahun_ini . '-' . $i . '-01'))
+                ];
+            }
+
+
 
             // Ambil data per status untuk bulan terpilih
             $sql_status = mysqli_query($konek, "
@@ -173,17 +180,15 @@ $data_proses = mysqli_fetch_array($sql_dalam_pengerjaan);
                             <form method="get" class="form-inline filter-bulan">
                                 <input type="hidden" name="page" value="arsip-home">
                                 <select name="bulan" class="form-control form-control-sm" style="font-size:13px;" onchange="this.form.submit()">
-                                    <?php while ($b = mysqli_fetch_array($sql_bulan)) { 
-                                        $bulan = $b['bulan'];
-                                        $nama_bulan = date("F Y", strtotime($bulan . "-01"));
-                                    ?>
-                                        <option value="<?php echo $bulan; ?>" 
-                                            <?php echo ($bulan == $selected_month) ? 'selected' : ''; ?>>
-                                            <?php echo $nama_bulan; ?>
+                                    <?php foreach ($bulan_list as $b) { ?>
+                                        <option value="<?php echo $b['value']; ?>" 
+                                            <?php echo ($b['value'] == $selected_month) ? 'selected' : ''; ?>>
+                                            <?php echo $b['nama']; ?>
                                         </option>
                                     <?php } ?>
                                 </select>
                             </form>
+
                         </div>
 
                         <div class="card-body">
@@ -277,7 +282,67 @@ $data_proses = mysqli_fetch_array($sql_dalam_pengerjaan);
                 </div>
             </div>
 
-            <!-- ====== Styling Tambahan ====== -->
+            <!-- ====== Bagian Aktivitas Terbaru ====== -->
+            <div class="row mt-4">
+                <div class="col-12">
+                    <div class="card shadow-sm">
+                        <div class="card-header d-flex justify-content-between align-items-center">
+                            <h5 class="mb-0" style="font-size:16px;">
+                                <i class="fas fa-clock"></i> Aktivitas Terbaru
+                            </h5>
+                            <a href="?page=lihat_tiket_keluhan" class="btn btn-sm btn-outline-primary">
+                                Lihat Semua <i class="fas fa-arrow-right"></i>
+                            </a>
+                        </div>
+                        <div class="card-body p-0">
+                            <div class="table-responsive">
+                                <table class="table table-striped table-hover mb-0">
+                                    <thead class="table-light">
+                                        <tr>
+                                            <th style="width:5%;">No</th>
+                                            <th style="width:20%;">Tanggal</th>
+                                            <th style="width:25%;">Nama Barang</th>
+                                            <th style="width:25%;">Status</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <?php
+                                        // Ambil 5 tiket terbaru dari user lain
+                                        $sql_aktivitas = mysqli_query($konek, "
+                                            SELECT t.kode_ticket, t.tanggal, b.nama_barang, s.keterangan_status
+                                            FROM tabel_tiket t
+                                            LEFT JOIN tabel_barang b ON t.id_barang = b.id_barang
+                                            LEFT JOIN status s ON t.id_status = s.id_status
+                                            ORDER BY t.tanggal DESC
+                                            LIMIT 5
+                                        ");
+
+                                        $no = 1;
+                                        if (mysqli_num_rows($sql_aktivitas) > 0) {
+                                            while ($row = mysqli_fetch_assoc($sql_aktivitas)) {
+
+                                                $warna = $row['warna_status'] ?? 'secondary';
+                                                echo "<tr>
+                                                    <td>{$no}</td>
+                                                    <td>" . date('d M Y', strtotime($row['tanggal'])) . "</td>
+                                                    <td>{$row['nama_barang']}</td>
+                                                    <td><span class='badge bg-{$warna}'>{$row['keterangan_status']}</span></td>
+                                                </tr>";
+                                                $no++;
+                                            }
+                                        } else {
+                                            echo "<tr><td colspan='5' class='text-center text-muted py-3'>Belum ada aktivitas terbaru</td></tr>";
+                                        }
+                                        ?>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
             <style>
             /* Pastikan card bawah sejajar dengan card atas */
             .small-box {
@@ -300,14 +365,32 @@ $data_proses = mysqli_fetch_array($sql_dalam_pengerjaan);
                 border-radius: 10px;
                 transition: all 0.3s ease;
             }
-            .card:hover {
-                transform: translateY(-3px);
-                box-shadow: 0 6px 16px rgba(0,0,0,0.1);
-            }
 
             /* Tambahkan konsistensi spacing */
             .container-fluid .row {
                 margin-bottom: 10px;
+            }
+
+            .table-hover tbody tr:hover {
+                background-color: #f8f9fa;
+                cursor: pointer;
+                transition: background-color 0.2s ease-in-out;
+            }
+
+            .table thead th {
+                font-size: 14px;
+                font-weight: 600;
+            }
+
+            .table tbody td {
+                font-size: 14px;
+                vertical-align: middle;
+            }
+
+            .badge {
+                font-size: 12px;
+                padding: 6px 10px;
+                border-radius: 8px;
             }
             </style>
 

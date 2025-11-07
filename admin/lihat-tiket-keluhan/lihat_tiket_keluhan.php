@@ -216,7 +216,7 @@
                         $('#m_paraf_p').text(paraf_p);
                         $('#m_paraf_g').text(paraf_g);
                         $('#m_keterangan').html(keterangan.replace(/\n/g, "<br>"));
-                        
+
                         // ===== pewarnaan status =====
                         var id_status = $tr.data('id_status');
                         var statusBadgeClass = '';
@@ -250,10 +250,11 @@
             }
 
             .clickable-row:hover {
-                color: #f8f9fa !important;
-                background-color: #318CE7 !important;   /* biru lembut saat hover */
-                transform: scale(1.005);                /* sedikit membesar */
+                background-color: #318CE7 !important;
+                color: #fff !important;
+                transform: translateY(-1px); /* sedikit naik, tanpa mengubah lebar tabel */
             }
+
 
             /* ===== Tampilan badge status ===== */
             .badge-success { background-color: #28a745; }

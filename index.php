@@ -46,7 +46,6 @@ $data_profil = mysqli_fetch_array($query_profil, MYSQLI_ASSOC);
             border-top-left-radius: 10px;
             border-top-right-radius: 10px;
         }
-        /* Pastikan modal tampil di atas sidebar/navbar */
         .modal-backdrop.show {
             z-index: 1040 !important;
         }
@@ -80,8 +79,20 @@ $data_profil = mysqli_fetch_array($query_profil, MYSQLI_ASSOC);
 
         <div class="sidebar">
             <div class="user-panel mt-2 pb-2 mb-2 d-flex">
+                <?php
+                $nama_inisial = strtoupper(substr($data_nama, 0, 1)); // ambil huruf pertama nama
+                $warna_bg = substr(md5($data_nama), 0, 6); // warna unik berdasarkan nama
+                ?>
                 <div class="image">
-                    <img src="dist/img/user.png" class="img-circle elevation-1" alt="User Image">
+                    <div class="profile-circle" style="
+                        width: 35px; height: 35px;
+                        border-radius: 50%;
+                        background-color: #<?php echo $warna_bg; ?>;
+                        display: flex; align-items: center; justify-content: center;
+                        color: white; font-weight: bold; font-size: 16px;
+                    ">
+                        <?php echo $nama_inisial; ?>
+                    </div>
                 </div>
                 <div class="info">
                     <!-- Tombol buka modal profil -->
@@ -184,6 +195,9 @@ $data_profil = mysqli_fetch_array($query_profil, MYSQLI_ASSOC);
                 switch ($page) {
                     case 'arsip-home': include "home/home.php"; break;
                     case 'data-pengguna': include "admin/pengguna/data_pengguna.php"; break;
+                    case 'edit-pengguna': include "admin/pengguna/edit_pengguna.php"; break;
+                    case 'add-pengguna': include "admin/pengguna/add_pengguna.php"; break;
+                    case 'del-pengguna': include "admin/pengguna/del_pengguna.php"; break;
                     case 'input_keluhan': include "admin/input-keluhan/input_keluhan.php"; break;
                     case 'lihat_tiket_keluhan': include "admin/lihat-tiket-keluhan/lihat_tiket_keluhan.php"; break;
                     case 'user-input_keluhan': include "user/input-keluhan/input_keluhan.php"; break;
@@ -216,10 +230,26 @@ $data_profil = mysqli_fetch_array($query_profil, MYSQLI_ASSOC);
       </div>
       <div class="modal-body">
         <div class="text-center mb-3">
-          <img src="dist/img/user.png" class="img-circle elevation-2" alt="User Image" width="80">
-          <h5 class="mt-2 mb-0"><?php echo $data_nama; ?></h5>
+          <?php
+            $nama_inisial = strtoupper(substr($data_nama, 0, 1)); // huruf pertama nama
+            $warna_bg = substr(md5($data_nama), 0, 6); // warna unik per nama
+          ?>
+          <div style="display: flex; justify-content: center;">
+              <div class="profile-circle-modal" style="
+                  width: 80px; height: 80px;
+                  border-radius: 50%;
+                  background-color: #<?php echo $warna_bg; ?>;
+                  display: flex; align-items: center; justify-content: center;
+                  color: white; font-weight: bold; font-size: 32px;
+                  box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+              ">
+                  <?php echo $nama_inisial; ?>
+              </div>
+          </div>
+          <h5 class="mt-3 mb-0"><?php echo $data_nama; ?></h5>
           <small class="text-muted"><?php echo $data_level; ?></small>
         </div>
+
         <table class="table table-sm table-bordered">
           <tr><th>NIP</th><td><?php echo $data_profil['NIP'] ?? '-'; ?></td></tr>
           <tr><th>Nama</th><td><?php echo $data_profil['Nama'] ?? '-'; ?></td></tr>
