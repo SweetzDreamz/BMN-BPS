@@ -1,3 +1,41 @@
+<style>
+            .card-success{
+				border-radius: 12px;
+			}
+			.card-header {
+                background: linear-gradient(135deg, #007bff, #00a0ff);
+                color: white;
+                border-top-left-radius: 12px;
+                border-top-right-radius: 12px;
+                padding: 16px 20px;
+            }
+            .card-footer {
+                border-top: 1px solid #dee2e6;
+                background-color: #f8f9fa;
+                border-bottom-left-radius: 12px;
+                border-bottom-right-radius: 12px;
+                padding: 14px 20px;
+            }
+
+            .btn-info {
+                background: linear-gradient(135deg, #007bff, #00a0ff);
+                border: none;
+                border-radius: 8px;
+                padding: 10px 18px;
+                font-weight: 500;
+                transition: all 0.2s ease;
+            }
+            .btn-info:hover {
+                transform: translateY(-2px);
+                box-shadow: 0 3px 10px rgba(0, 123, 255, 0.4);
+            }
+
+            .btn-secondary {
+                border-radius: 8px;
+                padding: 10px 18px;
+            }
+</style>
+
 <?php
 if(isset($_GET['kode'])){
     $sql_cek = "SELECT * FROM tabel_pegawai WHERE NIP='".$_GET['kode']."'";
@@ -118,8 +156,8 @@ if(isset($_GET['kode'])){
             </div>
 
         </div>
-        <div class="card-footer">
-            <input type="submit" name="Ubah" value="Simpan" class="btn btn-success">
+        <div class="card-footer text-right">
+            <input type="submit" name="Ubah" value="Simpan" class="btn btn-info">
             <a href="?page=data-pengguna" title="Kembali" class="btn btn-secondary">Batal</a>
         </div>
     </form>

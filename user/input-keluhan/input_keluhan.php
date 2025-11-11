@@ -1,6 +1,9 @@
 <?
 session_start();
 ?>
+
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
 <style>
 
 
@@ -235,7 +238,7 @@ session_start();
 
 
 
-            <div class="card-footer">
+            <div class="card-footer text-right">
                 <input type="submit" name="Simpan" value="Simpan" class="btn btn-info">
                 <a href="?page=data-pengguna" class="btn btn-secondary">Batal</a>
             </div>
@@ -328,28 +331,37 @@ if (isset($_POST['Simpan'])) {
     $query_simpan = mysqli_query($konek, $sql_simpan);
 
 if ($query_simpan) {
-    echo "<script>
-    Swal.fire({
-        title: 'Tambah Data Berhasil',
-        icon: 'success',
-        showConfirmButton: false,
-        timer: 1200
+    echo "
+    <script src='https://cdn.jsdelivr.net/npm/sweetalert2@11'></script>
+    <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        Swal.fire({
+            title: 'Tambah Data Berhasil!',
+            icon: 'success',
+            showConfirmButton: false,
+            timer: 1500
+        }).then(() => {
+            window.location.href = 'index.php?page=lihat_tiket_keluhan';
+        });
     });
-    setTimeout(function(){
-        window.location.href = 'index.php?page=arsip-sp2d';
-    }, 1300);
     </script>";
 } else {
-    $err = mysqli_error($konek);
-    echo "<script>
-    Swal.fire({
-        title: 'Tambah Data Gagal',
-        text: '".addslashes($err)."',
-        icon: 'error',
-        confirmButtonText: 'OK'
+    $err = addslashes(mysqli_error($konek));
+    echo "
+    <script src='https://cdn.jsdelivr.net/npm/sweetalert2@11'></script>
+    <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        Swal.fire({
+            title: 'Tambah Data Gagal',
+            text: '{$err}',
+            icon: 'error',
+            confirmButtonText: 'OK'
+        });
     });
     </script>";
 }
+
+
 
 }
 ?>

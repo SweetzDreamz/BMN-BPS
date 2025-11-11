@@ -130,7 +130,7 @@ $data_proses = mysqli_fetch_array($sql_dalam_pengerjaan);
 
             <?php
 
-                        // Bulan yang dipilih (default: bulan ini)
+            // Bulan yang dipilih (default: bulan ini)
             $selected_month = isset($_GET['bulan']) ? $_GET['bulan'] : date('Y-m');
             // Ambil tahun saat ini dari bulan terpilih
             $tahun_ini = date('Y', strtotime($selected_month . "-01"));
@@ -163,10 +163,10 @@ $data_proses = mysqli_fetch_array($sql_dalam_pengerjaan);
             $proses = $data_status['proses'] ?? 0;
             ?>
 
-            <!-- ====== Statistik Tiket per Bulan & Ringkasan ====== -->
-            <div class="row mt-4 g-3">
-                <!-- ====== Bagian Grafik Statistik ====== -->
-                <div class="col-lg-8 col-md-12">
+            <!-- ====== Bagian Statistik Tiket per Bulan ====== -->
+            <div class="row mt-2">
+                <!-- Kartu Statistik -->
+                <div class="col-lg-8 col-12 me-lg-3">
                     <div class="card shadow-sm h-100">
                         <div class="card-header d-flex justify-content-between align-items-center flex-wrap">
                             <h5 class="mb-2 mb-md-0" style="font-size:16px;">
@@ -176,7 +176,7 @@ $data_proses = mysqli_fetch_array($sql_dalam_pengerjaan);
                                 </span>
                             </h5>
 
-                            <!-- Filter Bulan (Ditempatkan di Kanan) -->
+                            <!-- Filter Bulan -->
                             <form method="get" class="form-inline filter-bulan">
                                 <input type="hidden" name="page" value="arsip-home">
                                 <select name="bulan" class="form-control form-control-sm" style="font-size:13px;" onchange="this.form.submit()">
@@ -188,7 +188,6 @@ $data_proses = mysqli_fetch_array($sql_dalam_pengerjaan);
                                     <?php } ?>
                                 </select>
                             </form>
-
                         </div>
 
                         <div class="card-body">
@@ -197,153 +196,107 @@ $data_proses = mysqli_fetch_array($sql_dalam_pengerjaan);
                     </div>
                 </div>
 
-                <style>
-                /* ==== Tata letak filter bulan di kanan ==== */
-                .filter-bulan {
-                    margin-left: auto; /* dorong ke kanan */
-                    display: flex;
-                    align-items: center;
-                    gap: 8px;
-                }
+            <?php
+            // --- Pastikan $selected_month sudah ada (ambil default bulan ini jika belum) ---
+            $selected_month = $selected_month ?? (isset($_GET['bulan']) ? $_GET['bulan'] : date('Y-m'));
 
-                .filter-bulan select {
-                    min-width: 160px;
-                }
+            // Ambil tahun yang sedang dipilih (aman)
+            $selected_year = date('Y', strtotime($selected_month . "-01"));
 
-                /* Agar saat di layar kecil form pindah ke bawah header */
-                @media (max-width: 768px) {
-                    .filter-bulan {
-                        width: 100%;
-                        justify-content: flex-start;
-                        margin-top: 8px;
-                    }
-                }
+            // Hitung total tiket tahun ini (aman dengan fallback 0)
+            $total_tahun_ini = 0;
+            $sql_total_tahun_ini = mysqli_query($konek, "
+                SELECT COUNT(*) AS total_tahun_ini 
+                FROM tabel_tiket 
+                WHERE YEAR(tanggal) = '". mysqli_real_escape_string($konek, $selected_year) ."'
+            ");
+            if ($sql_total_tahun_ini && mysqli_num_rows($sql_total_tahun_ini) > 0) {
+                $tmp = mysqli_fetch_assoc($sql_total_tahun_ini);
+                $total_tahun_ini = isset($tmp['total_tahun_ini']) ? (int)$tmp['total_tahun_ini'] : 0;
+            }
 
-                /* Penyesuaian header card agar rapi dan tidak terpotong */
-                .card-header {
-                    background-color: #f8f9fa;
-                    border-bottom: 1px solid #dee2e6;
-                    padding: 0.75rem 1rem;
-                }
-                </style>
+            // Hitung total tiket tahun sebelumnya
+            $tahun_sebelumnya = (int)$selected_year - 1;
+            $total_tahun_lalu = 0;
+            $sql_total_tahun_lalu = mysqli_query($konek, "
+                SELECT COUNT(*) AS total_tahun_lalu 
+                FROM tabel_tiket 
+                WHERE YEAR(tanggal) = '". mysqli_real_escape_string($konek, $tahun_sebelumnya) ."'
+            ");
+            if ($sql_total_tahun_lalu && mysqli_num_rows($sql_total_tahun_lalu) > 0) {
+                $tmp2 = mysqli_fetch_assoc($sql_total_tahun_lalu);
+                $total_tahun_lalu = isset($tmp2['total_tahun_lalu']) ? (int)$tmp2['total_tahun_lalu'] : 0;
+            }
+
+            // Selisih dan kelas warna/ikon
+            $selisih = $total_tahun_ini - $total_tahun_lalu;
+            $warna_selisih = ($selisih >= 0) ? 'text-success' : 'text-danger';
+            $ikon_selisih = ($selisih >= 0) ? '<i class="fas fa-arrow-up"></i>' : '<i class="fas fa-arrow-down"></i>';
+            ?>
 
 
-                <!-- ====== Bagian Ringkasan Tahunan ====== -->
-                <div class="col-lg-4 col-md-12">
-                    <?php
-                    // Ambil tahun yang sedang dipilih
-                    $selected_year = date('Y', strtotime($selected_month . "-01"));
-
-                    // Hitung total tiket tahun ini
-                    $sql_total_tahun_ini = mysqli_query($konek, "
-                        SELECT COUNT(*) AS total_tahun_ini 
-                        FROM tabel_tiket 
-                        WHERE YEAR(tanggal) = '$selected_year'
-                    ");
-                    $total_tahun_ini = mysqli_fetch_assoc($sql_total_tahun_ini)['total_tahun_ini'] ?? 0;
-
-                    // Hitung total tiket tahun sebelumnya
-                    $tahun_sebelumnya = $selected_year - 1;
-                    $sql_total_tahun_lalu = mysqli_query($konek, "
-                        SELECT COUNT(*) AS total_tahun_lalu 
-                        FROM tabel_tiket 
-                        WHERE YEAR(tanggal) = '$tahun_sebelumnya'
-                    ");
-                    $total_tahun_lalu = mysqli_fetch_assoc($sql_total_tahun_lalu)['total_tahun_lalu'] ?? 0;
-
-                    // Hitung selisih antar tahun
-                    $selisih = $total_tahun_ini - $total_tahun_lalu;
-                    $warna_selisih = ($selisih >= 0) ? 'text-success' : 'text-danger';
-                    $ikon_selisih = ($selisih >= 0) ? '<i class="fas fa-arrow-up"></i>' : '<i class="fas fa-arrow-down"></i>';
-                    ?>
-                    <div class="card shadow-sm h-100 d-flex align-items-center justify-content-center text-center">
-                        <div class="card-body w-100">
-                            <h6 class="fw-bold mb-2">Jumlah Tiket Tahun <?php echo $selected_year; ?></h6>
-                            <h2 class="mb-0"><?php echo $total_tahun_ini; ?></h2>
-                            <small class="text-muted">Total Tiket Masuk Tahun Ini</small>
-                            <hr>
-                            <p class="mb-2">Perbandingan dengan Tahun <?php echo $tahun_sebelumnya; ?>:</p>
-                            <?php if ($selisih != 0) { ?>
-                                <p class="mb-0 <?php echo $warna_selisih; ?>">
-                                    <?php echo $ikon_selisih; ?> 
-                                    <?php echo abs($selisih); ?> tiket 
-                                    <?php echo ($selisih >= 0) ? 'lebih banyak' : 'lebih sedikit'; ?>
-                                </p>
-                            <?php } else { ?>
-                                <p class="text-secondary mb-0">Tidak ada perubahan dari tahun lalu</p>
-                            <?php } ?>
-                            <hr>
-                            <p class="text-muted" style="font-size:13px;">
-                                <i class="fas fa-info-circle"></i> Statistik ini menampilkan total tiket per tahun 
-                                <br>(termasuk semua status tiket)
+            <!-- Kartu Ringkasan Tahunan -->
+            <div class="col-lg-4 col-12 ms-lg-3 mt-2 mt-lg-0">
+                <div class="card shadow-sm ringkasan-tahunan text-center h-100">
+                    <div class="card-body">
+                        <h6 class="fw-bold mb-2">Jumlah Tiket Tahun <?php echo $selected_year; ?></h6>
+                        <h2 class="mb-0"><?php echo $total_tahun_ini; ?></h2>
+                        <small class="text-muted">Total Tiket Masuk Tahun Ini</small>
+                        <hr>
+                        <p class="mb-2">Perbandingan dengan Tahun <?php echo $tahun_sebelumnya; ?>:</p>
+                        <?php if ($selisih != 0) { ?>
+                            <p class="mb-0 <?php echo $warna_selisih; ?>">
+                                <?php echo $ikon_selisih; ?> 
+                                <?php echo abs($selisih); ?> tiket 
+                                <?php echo ($selisih >= 0) ? 'lebih banyak' : 'lebih sedikit'; ?>
                             </p>
-                        </div>
+                        <?php } else { ?>
+                            <p class="text-secondary mb-0">Tidak ada perubahan dari tahun lalu</p>
+                        <?php } ?>
+                        <hr>
+                        <p class="text-muted" style="font-size:13px;">
+                            <i class="fas fa-info-circle"></i> Statistik ini menampilkan total tiket per tahun 
+                            <br>(termasuk semua status tiket)
+                        </p>
                     </div>
                 </div>
             </div>
+        </div>
 
-            <!-- ====== Bagian Aktivitas Terbaru ====== -->
-            <div class="row mt-4">
-                <div class="col-12">
-                    <div class="card shadow-sm">
-                        <div class="card-header d-flex justify-content-between align-items-center">
-                            <h5 class="mb-0" style="font-size:16px;">
-                                <i class="fas fa-clock"></i> Aktivitas Terbaru
-                            </h5>
-                            <a href="?page=lihat_tiket_keluhan" class="btn btn-sm btn-outline-primary">
-                                Lihat Semua <i class="fas fa-arrow-right"></i>
-                            </a>
-                        </div>
-                        <div class="card-body p-0">
-                            <div class="table-responsive">
-                                <table class="table table-striped table-hover mb-0">
-                                    <thead class="table-light">
-                                        <tr>
-                                            <th style="width:5%;">No</th>
-                                            <th style="width:20%;">Tanggal</th>
-                                            <th style="width:25%;">Nama Barang</th>
-                                            <th style="width:25%;">Status</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <?php
-                                        // Ambil 5 tiket terbaru dari user lain
-                                        $sql_aktivitas = mysqli_query($konek, "
-                                            SELECT t.kode_ticket, t.tanggal, b.nama_barang, s.keterangan_status
-                                            FROM tabel_tiket t
-                                            LEFT JOIN tabel_barang b ON t.id_barang = b.id_barang
-                                            LEFT JOIN status s ON t.id_status = s.id_status
-                                            ORDER BY t.tanggal DESC
-                                            LIMIT 5
-                                        ");
+            <!-- ==== CSS tambahan agar layout rapi ==== -->
+            <style>
+            /* Posisi filter bulan */
+            .filter-bulan {
+                margin-left: auto;
+                display: flex;
+                align-items: center;
+                gap: 8px;
+            }
 
-                                        $no = 1;
-                                        if (mysqli_num_rows($sql_aktivitas) > 0) {
-                                            while ($row = mysqli_fetch_assoc($sql_aktivitas)) {
+            .filter-bulan select {
+                min-width: 160px;
+            }
 
-                                                $warna = $row['warna_status'] ?? 'secondary';
-                                                echo "<tr>
-                                                    <td>{$no}</td>
-                                                    <td>" . date('d M Y', strtotime($row['tanggal'])) . "</td>
-                                                    <td>{$row['nama_barang']}</td>
-                                                    <td><span class='badge bg-{$warna}'>{$row['keterangan_status']}</span></td>
-                                                </tr>";
-                                                $no++;
-                                            }
-                                        } else {
-                                            echo "<tr><td colspan='5' class='text-center text-muted py-3'>Belum ada aktivitas terbaru</td></tr>";
-                                        }
-                                        ?>
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
+            /* Responsif untuk layar kecil */
+            @media (max-width: 768px) {
+                .filter-bulan {
+                    width: 100%;
+                    justify-content: flex-start;
+                    margin-top: 8px;
+                }
+            }
+
+            /* Gaya umum card */
+            .card {
+                border-radius: 10px;
+                transition: all 0.3s ease;
+            }
+
+            </style>
 
 
             <style>
+
             /* Pastikan card bawah sejajar dengan card atas */
             .small-box {
                 min-height: 140px;
@@ -385,12 +338,6 @@ $data_proses = mysqli_fetch_array($sql_dalam_pengerjaan);
             .table tbody td {
                 font-size: 14px;
                 vertical-align: middle;
-            }
-
-            .badge {
-                font-size: 12px;
-                padding: 6px 10px;
-                border-radius: 8px;
             }
             </style>
 
@@ -440,6 +387,7 @@ $data_proses = mysqli_fetch_array($sql_dalam_pengerjaan);
             </script>
 
             <style>
+
             /* Tambahkan jarak antar card dan gaya lembut */
             .card {
                 border-radius: 10px;
@@ -450,12 +398,8 @@ $data_proses = mysqli_fetch_array($sql_dalam_pengerjaan);
             .row.mt-4 > .col-lg-4 {
                 padding-left: 15px;
             }
+            
             </style>
-
-
-
-
-
         </div>
     </div>
 </section>

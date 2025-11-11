@@ -1,13 +1,25 @@
+<style>
+            .card-info{
+				border-radius: 12px;
+			}
+			.card-header {
+                background: linear-gradient(135deg, #007bff, #00a0ff);
+                color: white;
+                border-top-left-radius: 12px;
+                border-top-right-radius: 12px;
+                padding: 16px 20px;
+            }
+</style>
 <div class="card card-info">
 	<div class="card-header">
 		<h3 class="card-title">
 			<i class="fa fa-table"></i> Data Akses</h3>
 	</div>
-	<!-- /.card-header -->
+
 	<div class="card-body">
 		<div class="table-responsive">
 			<div>
-				<a href="?page=add-pengguna" class="btn btn-primary">
+				<a href="?page=add-pengguna" class="btn btn-success">
 					<i class="fa fa-edit"></i> Tambah Akses</a>
 			</div>
 			<br>
@@ -75,4 +87,3 @@
 			</table>
 		</div>
 	</div>
-	<!-- /.card-body -->

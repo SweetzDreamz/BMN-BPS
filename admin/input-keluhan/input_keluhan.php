@@ -238,7 +238,7 @@ session_start();
 
 
 
-            <div class="card-footer">
+            <div class="card-footer text-right">
                 <input type="submit" name="Simpan" value="Simpan" class="btn btn-info">
                 <a href="?page=data-pengguna" class="btn btn-secondary">Batal</a>
             </div>

@@ -8,7 +8,7 @@
     <div class="card-body">
         <div class="table-responsive">
             <div>
-                <a href="?page=arsip-dus" class="btn btn-primary">
+                <a href="?page=input_keluhan" class="btn btn-success">
                     <i class="fa fa-edit"></i> Input Keluhan
                 </a>
             </div>
@@ -243,6 +243,18 @@
             </script>
 
             <style>
+
+            .card-info{
+				border-radius: 12px;
+			}
+
+            .card-header {
+                background: linear-gradient(135deg, #007bff, #00a0ff);
+                color: white;
+                border-top-left-radius: 12px;
+                border-top-right-radius: 12px;
+                padding: 16px 20px;
+            }
             /* ===== Hover efek baris tabel ===== */
             .clickable-row {
                 cursor: pointer;

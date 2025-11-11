@@ -52,7 +52,27 @@ $data_profil = mysqli_fetch_array($query_profil, MYSQLI_ASSOC);
         .modal {
             z-index: 1050 !important;
         }
+
+        .nav-sidebar .nav-treeview {
+            font-size: 13px;          
+            margin-left: 12px;        
+        }
+
+        .nav-sidebar .nav-treeview .nav-item .nav-link {
+            padding-left: 28px;      
+        }
+
+        .nav-sidebar .nav-treeview .nav-link i.nav-icon {
+            font-size: 13px;          
+            margin-right: 6px;
+        }
+
+        .nav-sidebar .nav-treeview .nav-link:hover {
+            background-color: rgba(255,255,255,0.1);
+            border-radius: 6px;
+        }
     </style>
+
 </head>
 
 <body class="hold-transition sidebar-mini">
@@ -83,7 +103,7 @@ $data_profil = mysqli_fetch_array($query_profil, MYSQLI_ASSOC);
                 $nama_inisial = strtoupper(substr($data_nama, 0, 1)); // ambil huruf pertama nama
                 $warna_bg = substr(md5($data_nama), 0, 6); // warna unik berdasarkan nama
                 ?>
-                <div class="image">
+                <div class="image" style="padding-top: 6px;">
                     <div class="profile-circle" style="
                         width: 35px; height: 35px;
                         border-radius: 50%;
