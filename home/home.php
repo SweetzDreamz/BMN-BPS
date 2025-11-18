@@ -13,12 +13,25 @@ if (!isset($_SESSION['ses_id'])) {
     exit;
 }
 
-// =============== PERHITUNGAN UNTUK SEMUA USER =============== //
+// =============== PERHITUNGAN TIKET =============== //
 
-// Jumlah semua tiket (tanpa batas waktu)
+// Ambil data sesi
+$nip = $_SESSION['ses_id'];
+$level = $_SESSION['ses_level'];
+
+// Jika admin, tampilkan semua tiket
+if ($level == 'Admin' || $level == 'admin') {
+    $where_clause = ""; // tanpa filter
+} else {
+    // Jika user biasa, hanya tiket miliknya
+    $where_clause = "WHERE NIP = '$nip'";
+}
+
+// Jumlah semua tiket (total user / admin)
 $sql_tiket = mysqli_query($konek, "
     SELECT COUNT(*) AS jumlah_tiket 
     FROM tabel_tiket
+    $where_clause
 ");
 $data_tiket = mysqli_fetch_array($sql_tiket);
 $jumlah_tiket = $data_tiket['jumlah_tiket'];
@@ -28,6 +41,7 @@ $sql_diterima = mysqli_query($konek, "
     SELECT COUNT(*) AS total_diterima 
     FROM tabel_tiket 
     WHERE id_status = 1
+    " . (($level != 'Admin' && $level != 'admin') ? "AND NIP = '$nip'" : "") . "
 ");
 $data_diterima = mysqli_fetch_array($sql_diterima);
 
@@ -36,6 +50,7 @@ $sql_ditolak = mysqli_query($konek, "
     SELECT COUNT(*) AS total_ditolak 
     FROM tabel_tiket 
     WHERE id_status = 2
+    " . (($level != 'Admin' && $level != 'admin') ? "AND NIP = '$nip'" : "") . "
 ");
 $data_ditolak = mysqli_fetch_array($sql_ditolak);
 
@@ -44,8 +59,10 @@ $sql_dalam_pengerjaan = mysqli_query($konek, "
     SELECT COUNT(*) AS total_proses 
     FROM tabel_tiket 
     WHERE id_status = 3
+    " . (($level != 'Admin' && $level != 'admin') ? "AND NIP = '$nip'" : "") . "
 ");
 $data_proses = mysqli_fetch_array($sql_dalam_pengerjaan);
+
 
 ?>
 

@@ -165,12 +165,20 @@ session_start();
                         <label for="barang">Jenis Barang</label>
                         <select id="barang" name="barang" class="form-control select2" required>
                             <option value="">-- Pilih Barang --</option>
-                            <?php 
-                            $data = mysqli_query($konek,"SELECT * FROM tabel_barang ORDER BY nama_barang ASC");
-                            while($d = mysqli_fetch_array($data)){
-                                echo '<option value="'.$d['id_barang'].'">'.$d['kode_barang'].' - '.$d['nama_barang'].'</option>';
-                            }
-                            ?>
+                                <?php 
+                                // Ambil data barang beserta nama ruangan-nya
+                                $data = mysqli_query($konek, "
+                                    SELECT b.id_barang, b.nama_barang, r.nama_ruangan
+                                    FROM tabel_barang AS b
+                                    LEFT JOIN tabel_ruangan AS r ON b.kode_ruangan = r.kode_ruangan
+                                    ORDER BY b.nama_barang ASC
+                                ");
+
+                                while ($d = mysqli_fetch_array($data)) {
+                                    $nama_ruangan = !empty($d['nama_ruangan']) ? $d['nama_ruangan'] : '-';
+                                    echo '<option value="'.$d['id_barang'].'">'.$d['id_barang'].' - '.$d['nama_barang'].' - '.$nama_ruangan.'</option>';
+                                }
+                                ?>
                         </select>
                     </div>
 

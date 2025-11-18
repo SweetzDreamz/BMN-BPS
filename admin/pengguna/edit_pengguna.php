@@ -163,6 +163,9 @@ if(isset($_GET['kode'])){
     </form>
 </div>
 
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+
 <?php
 if (isset($_POST['Ubah'])) {
     $sql_ubah = "UPDATE tabel_pegawai SET 

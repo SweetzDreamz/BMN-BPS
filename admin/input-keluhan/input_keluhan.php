@@ -6,8 +6,6 @@ session_start();
 
 <style>
 
-
-    /* ====== CARD STYLE ====== */
     .card.card-info {
         border-radius: 12px;
         box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
@@ -27,7 +25,6 @@ session_start();
         margin: 0;
     }
 
-    /* ====== FORM STRUCTURE ====== */
     .form-group label {
         font-weight: 500;
         color: #343a40;
@@ -44,8 +41,7 @@ session_start();
         padding: 10px 12px;
         font-size: 15px;
     }
-
-    /* Fokus input */
+    
     .form-control:focus,
     .select2-container--default .select2-selection--single:focus,
     .select2-container--default.select2-container--focus .select2-selection--single {
@@ -53,18 +49,15 @@ session_start();
         box-shadow: 0 0 0 4px rgba(0, 123, 255, 0.15);
     }
 
-    /* Label berubah warna saat input aktif */
     .form-group:focus-within label {
         color: #007bff;
     }
 
-    /* Jarak antar input */
     .form-group,
     .form-row {
         margin-bottom: 18px;
     }
 
-    /* Checkbox modern */
     .form-check-label {
         font-weight: 500;
     }
@@ -73,7 +66,6 @@ session_start();
         margin-right: 8px;
     }
 
-    /* Tombol footer */
     .card-footer {
         border-top: 1px solid #dee2e6;
         background-color: #f8f9fa;
@@ -100,7 +92,6 @@ session_start();
         padding: 10px 18px;
     }
 
-    /* ====== SELECT2 CUSTOM STYLE ====== */
     .select2-container--default .select2-selection--single {
         height: 42px !important;
         display: flex;
@@ -114,20 +105,16 @@ session_start();
         height: 40px !important;
     }
 
-    /* Placeholder warna abu lembut */
     ::placeholder {
         color: #adb5bd !important;
     }
 
-    /* Responsif */
     @media (max-width: 768px) {
         .form-row {
             flex-direction: column;
         }
     }
 
-
-    /* Select2 agar seukuran form-control */
     .select2-container--default .select2-selection--single {
         height: 38px !important;
         border: 1px solid #ced4da !important;
@@ -144,33 +131,37 @@ session_start();
     }
     .select2-container { width: 100% !important; }
 
-    /* Sedikit spasi agar form lebih lapang */
     .form-row { margin-bottom: 10px; }
 </style>
 
 <div class="card card-info">
     <div class="card-header">
         <h3 class="card-title">
-            <i class="far fa fa-wallet"></i> Input Keluhan
+            <i class="far fa fa-wallet"></i> Buat Tiket
         </h3>
     </div>
 
     <div class="card-body">
         <form action="" method="post" enctype="multipart/form-data">
-
-
-                <!-- ROW: Jenis Barang + Tanggal (side-by-side) -->
                 <div class="form-row">
                     <div class="form-group col-md-6">
                         <label for="barang">Jenis Barang</label>
                         <select id="barang" name="barang" class="form-control select2" required>
                             <option value="">-- Pilih Barang --</option>
-                            <?php 
-                            $data = mysqli_query($konek,"SELECT * FROM tabel_barang ORDER BY nama_barang ASC");
-                            while($d = mysqli_fetch_array($data)){
-                                echo '<option value="'.$d['id_barang'].'">'.$d['kode_barang'].' - '.$d['nama_barang'].'</option>';
-                            }
-                            ?>
+                                <?php 
+
+                                $data = mysqli_query($konek, "
+                                    SELECT b.id_barang, b.nama_barang, r.nama_ruangan
+                                    FROM tabel_barang AS b
+                                    LEFT JOIN tabel_ruangan AS r ON b.kode_ruangan = r.kode_ruangan
+                                    ORDER BY b.nama_barang ASC
+                                ");
+
+                                while ($d = mysqli_fetch_array($data)) {
+                                    $nama_ruangan = !empty($d['nama_ruangan']) ? $d['nama_ruangan'] : '-';
+                                    echo '<option value="'.$d['id_barang'].'">'.$d['id_barang'].' - '.$d['nama_barang'].' - '.$nama_ruangan.'</option>';
+                                }
+                                ?>
                         </select>
                     </div>
 
@@ -180,29 +171,25 @@ session_start();
                     </div>
                 </div>
 
-                <!-- FULL-WIDTH: Keluhan -->
                 <div class="form-group">
                     <label for="keluhan">Keluhan</label>
                     <textarea class="form-control" id="keluhan" name="keluhan" rows="3" required></textarea>
                 </div>
 
-                <!-- FULL-WIDTH: Hasil Pengecekan -->
                 <div class="form-group">
                     <label for="hasil">Hasil Pengecekan</label>
                     <textarea class="form-control" id="hasil" name="hasil" rows="3" required></textarea>
                 </div>
 
-                <!-- FULL-WIDTH: Tindakan -->
                 <div class="form-group">
                     <label for="tindakan">Tindakan</label>
                     <textarea class="form-control" id="tindakan" name="tindakan" rows="3" required></textarea>
                 </div>
 
-                <!-- ROW: Biaya + Pihak yang Mengerjakan (side-by-side) -->
                 <div class="form-row">
                     <div class="form-group col-md-6">
                         <label for="biaya">Biaya (Rp)</label>
-                        <input type="text" class="form-control" id="biaya" name="biaya" placeholder="Biaya (Rp)" required>
+                        <input type="text" class="form-control" id="biaya" name="biaya" required>
                     </div>
 
                     <div class="form-group col-md-6">
@@ -211,7 +198,6 @@ session_start();
                     </div>
                 </div>
 
-                <!-- ROW: Paraf Pelaksana + Paraf Pengurus (side-by-side, checkbox) -->
                 <div class="form-row align-items-center">
                     <div class="form-group col-md-6">
                         <label>Paraf Pelaksana</label>
@@ -230,7 +216,6 @@ session_start();
                     </div>
                 </div>
 
-                <!-- FULL-WIDTH: Keterangan -->
                 <div class="form-group">
                     <label for="keterangan">Keterangan</label>
                     <textarea class="form-control" id="keterangan" name="keterangan" rows="3" required></textarea>
@@ -246,15 +231,13 @@ session_start();
     </div>
 </div>
 
-<!-- tetap pakai Select2 CSS/JS (jika belum ada) -->
+
 <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
 
 
 <script>
-
-// Animasi lembut ketika field aktif
 $(document).ready(function() {
     $('input, textarea, select').on('focus', function() {
         $(this).closest('.form-group').addClass('active-group');
@@ -272,17 +255,17 @@ $(document).ready(function() {
 
 <script>
 $(document).ready(function() {
-    // Inisialisasi Select2
+
     $('.select2').select2({
         allowClear: true,
         width: 'resolve'
     });
 
-    // Format input biaya: hanya angka dan pemisah ribuan sederhana (opsional)
+
     $('#biaya').on('input', function() {
-        // Hapus semua kecuali angka
+
         var angka = $(this).val().replace(/[^0-9]/g, '');
-        // Format thousand separator (.) untuk tampilan
+
         var formatted = angka.replace(/\B(?=(\d{3})+(?!\d))/g, ".");
         $(this).val(formatted);
     });
@@ -294,7 +277,6 @@ if (isset($_POST['Simpan'])) {
     if (session_status() == PHP_SESSION_NONE) session_start();
     $nip = $_SESSION['ses_id'];
 
-    // Ambil dan sanitasi input
     $id_barang = mysqli_real_escape_string($konek, $_POST['barang']);
     $tanggal = mysqli_real_escape_string($konek, $_POST['tanggal']);
     $keluhan = mysqli_real_escape_string($konek, $_POST['keluhan']);
@@ -307,10 +289,8 @@ if (isset($_POST['Simpan'])) {
     $paraf_pengurus = isset($_POST['paraf_pengurus']) ? '✔' : '';
     $keterangan = mysqli_real_escape_string($konek, $_POST['keterangan']);
 
-    // ✅ Tambahkan id_status otomatis = 3
     $id_status = 3;
 
-    // Query INSERT diperbaiki
     $sql_simpan = "INSERT INTO tabel_tiket 
         (id_barang, NIP, tanggal, keluhan, hasil_pengecekan, tindakan, biaya, pihak_mengerjakan, paraf_pelaksana, paraf_pengurus, keterangan, id_status)
         VALUES (
@@ -336,7 +316,7 @@ if ($query_simpan) {
     <script>
     document.addEventListener('DOMContentLoaded', function() {
         Swal.fire({
-            title: 'Tambah Data Berhasil!',
+            title: 'Tiket Berhasil Dibuat!',
             icon: 'success',
             showConfirmButton: false,
             timer: 1500
@@ -352,7 +332,7 @@ if ($query_simpan) {
     <script>
     document.addEventListener('DOMContentLoaded', function() {
         Swal.fire({
-            title: 'Tambah Data Gagal',
+            title: 'Tiket Gagal Dibuat',
             text: '{$err}',
             icon: 'error',
             confirmButtonText: 'OK'

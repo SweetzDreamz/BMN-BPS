@@ -8,7 +8,6 @@
 	<form action="" method="post" enctype="multipart/form-data">
 		<div class="card-body">
 
-			<!-- NIP dan NIP Lama -->
 			<div class="form-row">
 				<div class="form-group col-md-6">
 					<label for="NIP">NIP</label>
@@ -21,13 +20,11 @@
 				</div>
 			</div>
 
-			<!-- Nama -->
 			<div class="form-group">
 				<label for="nama">Nama</label>
 				<input type="text" class="form-control" id="nama" name="nama" placeholder="Masukkan Nama" required>
 			</div>
 
-			<!-- Jabatan dan Golongan Akhir -->
 			<div class="form-row">
 				<div class="form-group col-md-6">
 					<label for="jabatan">Jabatan</label>
@@ -79,7 +76,6 @@
 				</div>
 			</div>
 
-			<!-- Email BPS dan Email Pribadi -->
 			<div class="form-row">
 				<div class="form-group col-md-6">
 					<label for="email_bps">Alamat Email (BPS)</label>
@@ -92,13 +88,11 @@
 				</div>
 			</div>
 
-			<!-- Password -->
 			<div class="form-group">
 				<label for="password">Password</label>
 				<input type="password" class="form-control" id="password" name="password" placeholder="Masukkan Password" required>
 			</div>
 
-			<!-- Role -->
 			<div class="form-group">
 				<label for="role">Role</label>
 				<select name="role" id="role" class="form-control" required>
@@ -141,7 +135,6 @@
     margin: 0;
 }
 
-/* ====== FORM STRUCTURE ====== */
 .form-group label {
     font-weight: 500;
     color: #343a40;
@@ -159,7 +152,6 @@
     font-size: 15px;
 }
 
-/* Fokus input */
 .form-control:focus,
 .select2-container--default .select2-selection--single:focus,
 .select2-container--default.select2-container--focus .select2-selection--single {
@@ -167,18 +159,15 @@
     box-shadow: 0 0 0 4px rgba(0, 123, 255, 0.15);
 }
 
-/* Label berubah warna saat input aktif */
 .form-group:focus-within label {
     color: #007bff;
 }
 
-/* Jarak antar input */
 .form-group,
 .form-row {
     margin-bottom: 18px;
 }
 
-/* Checkbox modern */
 .form-check-label {
     font-weight: 500;
 }
@@ -187,7 +176,6 @@
     margin-right: 8px;
 }
 
-/* Tombol footer */
 .card-footer {
     border-top: 1px solid #dee2e6;
     background-color: #f8f9fa;
@@ -214,7 +202,6 @@
     padding: 10px 18px;
 }
 
-/* ====== SELECT2 CUSTOM STYLE ====== */
 .select2-container--default .select2-selection--single {
     height: 42px !important;
     display: flex;
@@ -228,21 +215,19 @@
     height: 40px !important;
 }
 
-/* Placeholder warna abu lembut */
 ::placeholder {
     color: #adb5bd !important;
 }
 
-/* Responsif */
 @media (max-width: 768px) {
     .form-row {
         flex-direction: column;
     }
 }
 </style>
-
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script>
-// Animasi lembut ketika field aktif
+
 $(document).ready(function() {
     $('input, textarea, select').on('focus', function() {
         $(this).closest('.form-group').addClass('active-group');
@@ -261,7 +246,6 @@ $(document).ready(function() {
 <?php
 
     if (isset ($_POST['Simpan'])){
-    //mulai proses simpan data
         $sql_simpan = "INSERT INTO tabel_pegawai (NIP, `NIP Lama`, Nama, Jabatan, `Golongan Akhir`, `Alamat Email BPS`, `Alamat Gmail`, Password, Role) VALUES (
         '".$_POST['NIP']."',
         '".$_POST['nip_lama']."',
@@ -291,4 +275,4 @@ $(document).ready(function() {
           }
       })</script>";
     }}
-     //selesai proses simpan data
+

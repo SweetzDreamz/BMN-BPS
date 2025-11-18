@@ -20,17 +20,17 @@ $data_profil = mysqli_fetch_array($query_profil, MYSQLI_ASSOC);
 <html lang="id">
 <head>
     <meta charset="utf-8">
-    <title>BMN</title>
+    <title>E-Tiket BMN</title>
     <link rel="icon" href="dist/img/LogoBPS.PNG">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <!-- ====== Styles ====== -->
     <link rel="stylesheet" href="plugins/fontawesome-free/css/all.min.css">
     <link rel="stylesheet" href="plugins/datatables-bs4/css/dataTables.bootstrap4.css">
     <link rel="stylesheet" href="plugins/select2/css/select2.min.css">
     <link rel="stylesheet" href="plugins/select2-bootstrap4-theme/select2-bootstrap4.min.css">
     <link rel="stylesheet" href="dist/css/adminlte.min.css">
     <link href="https://fonts.googleapis.com/css?family=Poppins:400,500,600&display=swap" rel="stylesheet">
+    
 
     <style>
         body { font-family: 'Poppins', sans-serif !important; font-size: 14px; }
@@ -78,7 +78,6 @@ $data_profil = mysqli_fetch_array($query_profil, MYSQLI_ASSOC);
 <body class="hold-transition sidebar-mini">
 <div class="wrapper">
 
-    <!-- ====== Navbar ====== -->
     <nav class="main-header navbar navbar-expand navbar-blue navbar-light">
         <ul class="navbar-nav">
             <li class="nav-item">
@@ -90,11 +89,10 @@ $data_profil = mysqli_fetch_array($query_profil, MYSQLI_ASSOC);
         </ul>
     </nav>
 
-    <!-- ====== Sidebar ====== -->
     <aside class="main-sidebar sidebar-dark-primary elevation-4">
         <a href="index.php" class="brand-link">
             <img src="dist/img/LogoBPS.png" alt="Logo" class="brand-image" style="opacity:.8">
-            <span class="brand-text">BMN</span>
+            <span class="brand-text">E-Tiket BMN</span>
         </a>
 
         <div class="sidebar">
@@ -103,19 +101,21 @@ $data_profil = mysqli_fetch_array($query_profil, MYSQLI_ASSOC);
                 $nama_inisial = strtoupper(substr($data_nama, 0, 1)); // ambil huruf pertama nama
                 $warna_bg = substr(md5($data_nama), 0, 6); // warna unik berdasarkan nama
                 ?>
-                <div class="image" style="padding-top: 6px;">
-                    <div class="profile-circle" style="
-                        width: 35px; height: 35px;
-                        border-radius: 50%;
-                        background-color: #<?php echo $warna_bg; ?>;
-                        display: flex; align-items: center; justify-content: center;
-                        color: white; font-weight: bold; font-size: 16px;
-                    ">
-                        <?php echo $nama_inisial; ?>
+                <a href="#" data-toggle="modal" data-target="#profilModal">
+                    <div class="image" style="padding-top: 6px;">
+                        <div class="profile-circle" style="
+                            width: 35px; height: 35px;
+                            border-radius: 50%;
+                            background-color: #<?php echo $warna_bg; ?>;
+                            display: flex; align-items: center; justify-content: center;
+                            color: white; font-weight: bold; font-size: 16px;
+                        ">
+                            <?php echo $nama_inisial; ?>
+                        </div>
                     </div>
-                </div>
+                </a>
+
                 <div class="info">
-                    <!-- Tombol buka modal profil -->
                     <a href="#" class="d-block" data-toggle="modal" data-target="#profilModal">
                         <?php echo $data_nama; ?>
                     </a>
@@ -133,7 +133,6 @@ $data_profil = mysqli_fetch_array($query_profil, MYSQLI_ASSOC);
                 </div>
             </div>
 
-			<!-- Menu Sidebar -->
 			<nav class="mt-2">
 				<ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview">
 					<li class="nav-item">
@@ -153,7 +152,7 @@ $data_profil = mysqli_fetch_array($query_profil, MYSQLI_ASSOC);
 						<ul class="nav nav-treeview">
 							<li class="nav-item">
 								<a href="?page=input_keluhan" class="nav-link <?php echo ($_GET['page'] ?? '') == 'input_keluhan' ? 'active' : ''; ?>">
-									<i class="fas fa-ticket-alt nav-icon"></i><p>Input Keluhan</p>
+									<i class="fas fa-ticket-alt nav-icon"></i><p>Buat Tiket</p>
 								</a>
 							</li>
 							<li class="nav-item">
@@ -163,6 +162,39 @@ $data_profil = mysqli_fetch_array($query_profil, MYSQLI_ASSOC);
 							</li>
 						</ul>
 					</li>
+
+                    <?php  
+                        $is_kelola = in_array($_GET['page'] ?? '', [
+                            'kelola_data_bmn',
+                            'kelola_data_ruangan'
+                        ]);
+                    ?>
+					<li class="nav-item has-treeview <?php echo $is_kelola ? 'menu-open' : ''; ?>">
+						<a href="#" class="nav-link <?php echo $is_kelola ? 'active' : ''; ?>">
+                            <i class="nav-icon fas fa-archive"></i>
+                            <p>
+                                Kelola BMN
+                                <i class="right fas fa-angle-left"></i>
+                            </p>
+                        </a>
+                        <ul class="nav nav-treeview">
+
+                            <li class="nav-item">
+                                <a href="?page=kelola_data_bmn" class="nav-link <?php echo ($_GET['page'] ?? '') == 'kelola_data_bmn' ? 'active' : ''; ?>">
+                                    <i class="fas fa-boxes nav-icon"></i>
+                                    <p>Kelola Data BMN</p>
+                                </a>
+                            </li>
+
+                            <li class="nav-item">
+                                <a href="?page=kelola_data_ruangan" class="nav-link <?php echo ($_GET['page'] ?? '') == 'kelola_data_ruangan' ? 'active' : ''; ?>">
+                                    <i class="fas fa-door-open nav-icon"></i>
+                                    <p>Kelola Data Ruangan</p>
+                                </a>
+                            </li>
+
+                        </ul>
+                    </li>
 
 					<li class="nav-header"><i class="nav-icon fas fa-cog"></i> Settings</li>
 					<li class="nav-item">
@@ -206,7 +238,7 @@ $data_profil = mysqli_fetch_array($query_profil, MYSQLI_ASSOC);
         </div>
     </aside>
 
-    <!-- ====== Konten ====== -->
+
     <div class="content-wrapper">
         <section class="content">
             <div class="container-fluid">
@@ -222,6 +254,11 @@ $data_profil = mysqli_fetch_array($query_profil, MYSQLI_ASSOC);
                     case 'lihat_tiket_keluhan': include "admin/lihat-tiket-keluhan/lihat_tiket_keluhan.php"; break;
                     case 'user-input_keluhan': include "user/input-keluhan/input_keluhan.php"; break;
                     case 'user-lihat_tiket_keluhan': include "user/lihat-tiket-keluhan/lihat_tiket_keluhan.php"; break;
+                    case 'kelola_data_bmn': include "admin/Kelola BMN/kelola_data_bmn.php"; break;
+                    case 'kelola_data_ruangan': include "admin/Kelola BMN/kelola_data_ruangan.php"; break;
+                    case 'edit_data_ruangan': include "admin/Kelola BMN/edit_data_ruangan.php"; break;
+                    case 'add_data_ruangan': include "admin/Kelola BMN/add_data_ruangan.php"; break;
+                    case 'del_data_ruangan': include "admin/Kelola BMN/del_data_ruangan.php"; break;
                     default: include "home/home.php"; break;
                 }
                 ?>
@@ -229,7 +266,7 @@ $data_profil = mysqli_fetch_array($query_profil, MYSQLI_ASSOC);
         </section>
     </div>
 
-    <!-- ====== Footer ====== -->
+
     <footer class="main-footer">
         <div class="float-right d-none d-sm-block">
             © <a href="https://github.com/SweetzDreamz" target="_blank"><strong>MAGANG</strong></a> All rights reserved.
@@ -238,7 +275,7 @@ $data_profil = mysqli_fetch_array($query_profil, MYSQLI_ASSOC);
     </footer>
 </div>
 
-<!-- ====== Modal PROFIL ====== -->
+
 <div class="modal fade" id="profilModal" tabindex="-1" role="dialog" aria-labelledby="profilModalLabel" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered modal-md" role="document">
     <div class="modal-content">
@@ -285,7 +322,6 @@ $data_profil = mysqli_fetch_array($query_profil, MYSQLI_ASSOC);
   </div>
 </div>
 
-<!-- ====== Modal LOGOUT ====== -->
 <div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="logoutModalLabel" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered" role="document">
     <div class="modal-content">
@@ -306,13 +342,13 @@ $data_profil = mysqli_fetch_array($query_profil, MYSQLI_ASSOC);
   </div>
 </div>
 
-<!-- ====== Script ====== -->
 <script src="plugins/jquery/jquery.min.js"></script>
 <script src="plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
 <script src="plugins/datatables/jquery.dataTables.js"></script>
 <script src="plugins/datatables-bs4/js/dataTables.bootstrap4.js"></script>
 <script src="plugins/select2/js/select2.full.min.js"></script>
 <script src="dist/js/adminlte.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
 <script>
 $(function() {
