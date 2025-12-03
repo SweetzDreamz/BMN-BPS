@@ -33,6 +33,7 @@ $data_profil = mysqli_fetch_array($query_profil, MYSQLI_ASSOC);
     
 
     <style>
+
         body { font-family: 'Poppins', sans-serif !important; font-size: 14px; }
         .content-wrapper { padding-top: 20px; }
         .card { margin-bottom: 15px; }
@@ -67,15 +68,143 @@ $data_profil = mysqli_fetch_array($query_profil, MYSQLI_ASSOC);
             margin-right: 6px;
         }
 
-        .nav-sidebar .nav-treeview .nav-link:hover {
-            background-color: rgba(255,255,255,0.1);
-            border-radius: 6px;
+
+        .nav-header {
+            opacity: 0.6;    
         }
+        
+        /* --- KONFIGURASI SIDEBAR FIXED & MINI --- */
+        
+        /* 1. Atur Konten Agar Tidak Tertutup Sidebar saat Mini */
+        .content-wrapper, 
+        .main-footer, 
+        .main-header {
+            margin-left: 4.6rem !important; 
+            width: calc(100% - 4.6rem) !important;
+            transition: none !important; 
+        }
+
+        /* 2. Sidebar Utama */
+        .main-sidebar {
+            position: fixed !important;
+            top: 0;
+            left: 0;
+            height: 100vh;
+            z-index: 1038 !important; 
+            box-shadow: 4px 0 15px rgba(0,0,0,0.2); 
+            transition: width 0.3s ease-in-out !important;
+            overflow-x: hidden !important;
+            overflow-y: auto !important; 
+        }
+
+        /* --- LOGIKA COLLAPSE & HIDE TEXT --- */
+
+        /* A. SAAT SIDEBAR TERTUTUP (COLLAPSE) */
+        body.sidebar-collapse .main-sidebar,
+        body.sidebar-collapse.sidebar-mini .main-sidebar:hover {
+            width: 4.6rem !important;
+        }
+
+        /* B. SEMBUNYIKAN ELEMEN TEKS SAAT COLLAPSE */
+        body.sidebar-collapse .main-sidebar .nav-link p,
+        body.sidebar-collapse .main-sidebar .brand-text,
+        body.sidebar-collapse .main-sidebar .user-panel .info,
+        body.sidebar-collapse .main-sidebar .nav-header {
+            display: none !important;
+            opacity: 0 !important;
+            visibility: hidden !important;
+            width: 0 !important;
+            height: 0 !important;
+            margin: 0 !important;
+            padding: 0 !important;
+        }
+
+        /* Sembunyikan panah dropdown & Submenu */
+        body.sidebar-collapse .nav-sidebar .nav-link::after,
+        body.sidebar-collapse .nav-treeview {
+            display: none !important;
+        }
+
+        /* C. PENYESUAIAN POSISI IKON SAAT COLLAPSE */
+        
+        /* 1. Ikon Menu Tengah */
+        body.sidebar-collapse .nav-sidebar .nav-link i {
+            margin-right: 0 !important;
+            text-align: center;
+            width: 100%;
+            font-size: 1.2rem; 
+        }
+        
+        /* 2. Logo Brand Tengah */
+        body.sidebar-collapse .main-sidebar .brand-link {
+            width: 4.6rem !important;
+            text-align: center;
+            padding: 0.81rem 0 !important;
+            white-space: nowrap;
+        }
+        body.sidebar-collapse .main-sidebar .brand-image {
+            margin: 0 auto !important;
+            float: none !important;
+            display: block !important;
+        }
+
+        /* 3. USER PANEL TENGAH */
+        body.sidebar-collapse .user-panel {
+            display: flex !important;
+            justify-content: center !important;
+            width: 100% !important;
+            padding: 10px 0 !important; 
+            white-space: nowrap;
+        }
+        
+        body.sidebar-collapse .user-panel .image {
+            display: block !important;
+            width: auto !important;
+            padding: 0 !important;
+            margin: 0 !important;
+            opacity: 1 !important;
+            visibility: visible !important;
+        }
+
+        /* --- TOMBOL PUSHMENU (HAMBURGER) DINAMIS --- */
+        
+        [data-widget="pushmenu"] {
+            position: fixed !important;
+            top: 0;
+            z-index: 1040; 
+            width: 50px;
+            height: 37px !important;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: left 0.3s ease-in-out, background-color 0.3s;
+            border-radius: 0 0 5px 0;
+            cursor: pointer;
+        }
+
+        /* Tombol saat Sidebar TERBUKA */
+        body:not(.sidebar-collapse) [data-widget="pushmenu"] {
+            left: 250px; 
+            background-color: #343a40; 
+            box-shadow: 2px 0 5px rgba(0,0,0,0.2);
+        }
+
+        /* Tombol saat Sidebar TERTUTUP (Mini) */
+        body.sidebar-collapse [data-widget="pushmenu"] {
+            left: 4.6rem; 
+            background-color: #343a40; 
+            box-shadow: 2px 0 5px rgba(0,0,0,0.2);
+        }
+        
+        .main-header {
+            z-index: 1030;
+        }
+
     </style>
 
 </head>
 
-<body class="hold-transition sidebar-mini">
+<body class="hold-transition sidebar-mini layout-fixed sidebar-collapse">
 <div class="wrapper">
 
     <nav class="main-header navbar navbar-expand navbar-blue navbar-light">
@@ -91,15 +220,15 @@ $data_profil = mysqli_fetch_array($query_profil, MYSQLI_ASSOC);
 
     <aside class="main-sidebar sidebar-dark-primary elevation-4">
         <a href="index.php" class="brand-link">
-            <img src="dist/img/LogoBPS.png" alt="Logo" class="brand-image" style="opacity:.8">
-            <span class="brand-text">E-Tiket BMN</span>
+            <img src="dist/img/LogoBPS.png" alt="Logo" class="brand-image" style="opacity:.8;">
+            <span class="brand-text font-weight-light pl-2">E-Tiket BMN</span>
         </a>
 
         <div class="sidebar">
             <div class="user-panel mt-2 pb-2 mb-2 d-flex">
                 <?php
-                $nama_inisial = strtoupper(substr($data_nama, 0, 1)); // ambil huruf pertama nama
-                $warna_bg = substr(md5($data_nama), 0, 6); // warna unik berdasarkan nama
+                $nama_inisial = strtoupper(substr($data_nama, 0, 1)); 
+                $warna_bg = substr(md5($data_nama), 0, 6); 
                 ?>
                 <a href="#" data-toggle="modal" data-target="#profilModal">
                     <div class="image" style="padding-top: 6px;">
@@ -135,11 +264,20 @@ $data_profil = mysqli_fetch_array($query_profil, MYSQLI_ASSOC);
 
 			<nav class="mt-2">
 				<ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview">
-					<li class="nav-item">
-						<a href="?page=arsip-home" class="nav-link <?php echo ($_GET['page'] ?? '') == 'arsip-home' ? 'active' : ''; ?>">
-							<i class="nav-icon fas fa-home"></i><p>Home</p>
-						</a>
-					</li>
+                <li class="nav-item">
+                    <a href="?page=<?= ($data_level == 'Pengurus BMN') ? 'home-admin' : 'home-user' ?>"
+                    class="nav-link 
+                    <?php 
+                            echo (
+                                ($_GET['page'] ?? '') == 'home-admin' 
+                                || ($_GET['page'] ?? '') == 'home-user'
+                            ) ? 'active' : ''; 
+                    ?>">
+                        <i class="nav-icon fas fa-home"></i><p>Home</p>
+                    </a>
+                </li>
+
+                <li class="nav-header"><i class="nav-icon fas fa-th-large"></i> BMN</li>
 
 					<?php if ($data_level == "Pengurus BMN") { 
 						$is_keluhan = in_array($_GET['page'] ?? '', ['input_keluhan','lihat_tiket_keluhan']);
@@ -147,7 +285,7 @@ $data_profil = mysqli_fetch_array($query_profil, MYSQLI_ASSOC);
 					<li class="nav-item has-treeview <?php echo $is_keluhan ? 'menu-open' : ''; ?>">
 						<a href="#" class="nav-link <?php echo $is_keluhan ? 'active' : ''; ?>">
 							<i class="nav-icon fas fa-box"></i>
-							<p>Kartu BMN<i class="right fas fa-angle-left"></i></p>
+							<p>Tiket BMN<i class="right fas fa-angle-left"></i></p>
 						</a>
 						<ul class="nav nav-treeview">
 							<li class="nav-item">
@@ -160,6 +298,7 @@ $data_profil = mysqli_fetch_array($query_profil, MYSQLI_ASSOC);
 									<i class="fas fa-folder-open nav-icon"></i><p>Lihat Tiket</p>
 								</a>
 							</li>
+                            
 						</ul>
 					</li>
 
@@ -197,6 +336,7 @@ $data_profil = mysqli_fetch_array($query_profil, MYSQLI_ASSOC);
                     </li>
 
 					<li class="nav-header"><i class="nav-icon fas fa-cog"></i> Settings</li>
+                    
 					<li class="nav-item">
 						<a href="?page=data-pengguna" class="nav-link <?php echo ($_GET['page'] ?? '') == 'data-pengguna' ? 'active' : ''; ?>">
 							<i class="nav-icon fas fa-user"></i><p>Kelola Akses</p>
@@ -245,22 +385,55 @@ $data_profil = mysqli_fetch_array($query_profil, MYSQLI_ASSOC);
                 <?php
                 $page = $_GET['page'] ?? '';
                 switch ($page) {
-                    case 'arsip-home': include "home/home.php"; break;
+
+                    // ================= HOME ADMIN ==================
+                    case 'home-admin':
+                        include "admin/home/home-admin.php";
+                        break;
+
+                    // ================= HOME USER ==================
+                    case 'home':
+                    case 'home-user':
+                        include "user/home/home-user.php";
+                        break;
+
+                    // ================= PENGGUNA =================
                     case 'data-pengguna': include "admin/pengguna/data_pengguna.php"; break;
                     case 'edit-pengguna': include "admin/pengguna/edit_pengguna.php"; break;
                     case 'add-pengguna': include "admin/pengguna/add_pengguna.php"; break;
                     case 'del-pengguna': include "admin/pengguna/del_pengguna.php"; break;
+
+                    // ================= KELUHAN ADMIN ==============
                     case 'input_keluhan': include "admin/input-keluhan/input_keluhan.php"; break;
                     case 'lihat_tiket_keluhan': include "admin/lihat-tiket-keluhan/lihat_tiket_keluhan.php"; break;
+                    case 'proses_tiket_keluhan': include "admin/lihat-tiket-keluhan/proses_tiket_keluhan.php"; break;
+
+                    // ================= USER KELUHAN ===============
                     case 'user-input_keluhan': include "user/input-keluhan/input_keluhan.php"; break;
                     case 'user-lihat_tiket_keluhan': include "user/lihat-tiket-keluhan/lihat_tiket_keluhan.php"; break;
+
+                    // ================= BMN =======================
                     case 'kelola_data_bmn': include "admin/Kelola BMN/kelola_data_bmn.php"; break;
                     case 'kelola_data_ruangan': include "admin/Kelola BMN/kelola_data_ruangan.php"; break;
                     case 'edit_data_ruangan': include "admin/Kelola BMN/edit_data_ruangan.php"; break;
                     case 'add_data_ruangan': include "admin/Kelola BMN/add_data_ruangan.php"; break;
                     case 'del_data_ruangan': include "admin/Kelola BMN/del_data_ruangan.php"; break;
-                    default: include "home/home.php"; break;
+                    case 'edit_data_bmn': include "admin/Kelola BMN/edit_data_bmn.php"; break;
+                    case 'del_tiket_keluhan': include "admin/lihat-tiket-keluhan/del_tiket_keluhan.php"; break;
+                    case 'add_data_bmn': include "admin/Kelola BMN/add_data_bmn.php"; break;
+                    case 'del_data_bmn': include "admin/Kelola BMN/del_data_bmn.php"; break;
+
+                    // ================ DEFAULT ====================
+                    default:
+                        // Jika admin → arahkan ke home-admin
+                        if (isset($_SESSION['ses_level']) && $_SESSION['ses_level'] === "Pengurus BMN") {
+                            include "admin/home/home-admin.php";
+                        } else {
+                            include "user/home/home-user.php"; // user
+                        }
+                        break;
                 }
+
                 ?>
             </div>
         </section>
@@ -288,8 +461,8 @@ $data_profil = mysqli_fetch_array($query_profil, MYSQLI_ASSOC);
       <div class="modal-body">
         <div class="text-center mb-3">
           <?php
-            $nama_inisial = strtoupper(substr($data_nama, 0, 1)); // huruf pertama nama
-            $warna_bg = substr(md5($data_nama), 0, 6); // warna unik per nama
+            $nama_inisial = strtoupper(substr($data_nama, 0, 1)); 
+            $warna_bg = substr(md5($data_nama), 0, 6); 
           ?>
           <div style="display: flex; justify-content: center;">
               <div class="profile-circle-modal" style="
@@ -311,8 +484,8 @@ $data_profil = mysqli_fetch_array($query_profil, MYSQLI_ASSOC);
           <tr><th>NIP</th><td><?php echo $data_profil['NIP'] ?? '-'; ?></td></tr>
           <tr><th>Nama</th><td><?php echo $data_profil['Nama'] ?? '-'; ?></td></tr>
           <tr><th>Jabatan</th><td><?php echo $data_profil['Jabatan'] ?? '-'; ?></td></tr>
-          <tr><th>Unit Kerja</th><td><?php echo $data_profil['Unit_Kerja'] ?? '-'; ?></td></tr>
-          <tr><th>Email</th><td><?php echo $data_profil['Email'] ?? '-'; ?></td></tr>
+          <tr><th>Email BPS</th><td><?php echo $data_profil['Alamat Email BPS'] ?? '-'; ?></td></tr>
+          <tr><th>Email Pribadi</th><td><?php echo $data_profil['Alamat Gmail'] ?? '-'; ?></td></tr>
         </table>
       </div>
       <div class="modal-footer">
@@ -349,6 +522,22 @@ $data_profil = mysqli_fetch_array($query_profil, MYSQLI_ASSOC);
 <script src="plugins/select2/js/select2.full.min.js"></script>
 <script src="dist/js/adminlte.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script>
+    if (localStorage.getItem("theme") === "dark") {
+        document.body.classList.add("dark-mode");
+    }
+    var toggleBtn = document.getElementById("themeToggle");
+    if(toggleBtn){
+        toggleBtn.onclick = function() {
+            document.body.classList.toggle("dark-mode");
+            if (document.body.classList.contains("dark-mode")) {
+                localStorage.setItem("theme", "dark");
+            } else {
+                localStorage.setItem("theme", "light");
+            }
+        };
+    }
+</script>
 
 <script>
 $(function() {
@@ -359,6 +548,32 @@ $(function() {
     });
     $('.select2').select2();
     $('.select2bs4').select2({ theme:'bootstrap4' });
+
+    // --- FITUR: KLIK IKON PARENT -> EXPAND SIDEBAR ---
+    $(document).on('click', 'body.sidebar-collapse .main-sidebar .nav-item.has-treeview > .nav-link', function(e) {
+        e.preventDefault(); 
+        $('[data-widget="pushmenu"]').trigger('click');
+    });
+
+    // --- FITUR BARU: KLIK DI LUAR SIDEBAR -> TUTUP SIDEBAR ---
+    $(document).on('click', function(e) {
+        // Definisi elemen yang relevan
+        var sidebar = $('.main-sidebar');
+        var toggleBtn = $('[data-widget="pushmenu"]');
+        
+        // Cek kondisi:
+        // 1. Body TIDAK punya class 'sidebar-collapse' (artinya sidebar sedang TERBUKA)
+        // 2. Yang diklik BUKAN elemen sidebar (atau anaknya)
+        // 3. Yang diklik BUKAN tombol toggle (atau anaknya)
+        if (!$('body').hasClass('sidebar-collapse') && 
+            !sidebar.is(e.target) && sidebar.has(e.target).length === 0 && 
+            !toggleBtn.is(e.target) && toggleBtn.has(e.target).length === 0) {
+            
+            // Trigger tombol pushmenu untuk menutup sidebar secara alami
+            toggleBtn.trigger('click');
+        }
+    });
+
 });
 </script>
 

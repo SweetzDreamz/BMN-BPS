@@ -349,7 +349,7 @@ if ($query_simpan) {
             showConfirmButton: false,
             timer: 1500
         }).then(() => {
-            window.location.href = 'index.php?page=lihat_tiket_keluhan';
+            window.location.href = 'index.php?page=user-lihat_tiket_keluhan';
         });
     });
     </script>";

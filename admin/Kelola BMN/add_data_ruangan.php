@@ -21,6 +21,12 @@
 			</div>
 
 			<div class="form-group">
+				<label for="keterangan_ruangan">Keterangan Ruangan</label>
+				<textarea class="form-control" id="keterangan_ruangan" name="keterangan_ruangan" 
+				    	placeholder="Masukkan keterangan ruangan" rows="3"></textarea>
+			</div>
+
+			<div class="form-group">
 				<label for="tipe_ruangan">Tipe Ruangan</label>
                 <input type="text" class="form-control" id="tipe_ruangan" 
                        name="tipe_ruangan" placeholder="Masukkan tipe ruangan" required>
@@ -30,12 +36,6 @@
 				<label for="luas_ruangan_m2">Luas Ruangan (m²)</label>
 				<input type="number" class="form-control" id="luas_ruangan_m2" 
 				       name="luas_ruangan_m2" placeholder="Masukkan luas ruangan" required>
-			</div>
-
-			<div class="form-group">
-				<label for="keterangan_ruangan">Keterangan Ruangan</label>
-				<textarea class="form-control" id="keterangan_ruangan" name="keterangan_ruangan" 
-				          placeholder="Masukkan keterangan ruangan" rows="3"></textarea>
 			</div>
 
 		</div>

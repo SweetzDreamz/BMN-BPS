@@ -1,7 +1,7 @@
 <div class="card card-info">
 	<div class="card-header">
 		<h3 class="card-title">
-			<i class="fa fa-table"></i> Data Ruangan</h3>
+			<i class="fa fa-table"></i> <b>Data Ruangan</b></h3>
 	</div>
 
 	<div class="card-body">
@@ -53,10 +53,11 @@
                                 <i class="fa fa-edit"></i>
                             </a>
 
-                            <a href="?page=del_data_ruangan&kode=<?php echo $data['kode_ruangan']; ?>" 
-                            class="btn btn-danger btn-sm" 
-                            onclick="return confirm('Yakin ingin menghapus data ini?');">
-                                <i class="fa fa-trash"></i>
+                            <a href="#" 
+                            onclick="konfirmasiHapus('?page=del_data_ruangan&kode=<?php echo $data['kode_ruangan']; ?>')" 
+                            title="Hapus Data" 
+                            class="btn btn-danger btn-sm">
+                                <i class="fas fa-trash"></i>
                             </a>
                         </td>
 
@@ -71,6 +72,40 @@
 		</div>
 	</div>
 
+	</div>
+        <div class="modal fade" id="modalKonfirmasiHapus" tabindex="-1" role="dialog" aria-labelledby="modalHapusLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+            <div class="modal-header bg-danger text-white">
+                <h5 class="modal-title" id="modalHapusLabel"><i class="fas fa-trash-alt"></i> Konfirmasi Hapus</h5>
+                <button type="button" class="close text-white" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body text-center">
+                <p>Apakah Anda yakin ingin menghapus data ruangan ini?</p>
+            </div>
+            <div class="modal-footer justify-content-center">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal"><i class="fas fa-times"></i> Batal</button>
+                <a id="btn-hapus-link" href="#" class="btn btn-danger"><i class="fas fa-trash"></i> Ya, Hapus</a>
+            </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function konfirmasiHapus(urlHapus) {
+            // 1. Ambil tombol "Ya, Hapus" di dalam modal
+            var tombolHapus = document.getElementById('btn-hapus-link');
+            
+            // 2. Isi atribut href dengan link penghapusan yang dikirim dari tombol tabel
+            tombolHapus.setAttribute('href', urlHapus);
+            
+            // 3. Tampilkan modal
+            $('#modalKonfirmasiHapus').modal('show');
+        }
+    </script>
+
     <style>
             .card-info{
 				border-radius: 12px;
@@ -82,4 +117,10 @@
                 border-top-right-radius: 12px;
                 padding: 16px 20px;
             }
-</style>
+            /* Membuat tombol dalam kolom aksi sejajar horizontal */
+            td:last-child {
+                display: flex;
+                gap: 6px;      /* jarak antar tombol */
+                align-items: center;
+    }
+    </style>
