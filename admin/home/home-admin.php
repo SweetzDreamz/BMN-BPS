@@ -197,16 +197,23 @@ foreach ($cards as $c) { ?>
     <!-- Grafik -->
     <div class="col-lg-9">
         <div class="card">
-            <div class="card-header">
-                <h5><i class="fas fa-chart-line"></i> Statistik Tiket Tahun <?= $selected_year ?></h5>
-                <form method="get" class="float-right">
-                    <input type="hidden" name="page" value="home_admin">
-                    <select name="tahun" class="form-control form-control-sm" onchange="this.form.submit()">
-                        <?php foreach ($tahun_list as $th) { ?>
-                            <option value="<?= $th ?>" <?= ($th == $selected_year ? 'selected' : '') ?>><?= $th ?></option>
-                        <?php } ?>
-                    </select>
-                </form>
+            
+            <div class="card-header border-0 d-flex align-items-center">
+                <h3 class="card-title">
+                    <i class="fas fa-chart-line mr-1"></i> 
+                    Statistik Tiket Tahun <?= $selected_year ?>
+                </h3>
+
+                <div class="card-tools ml-auto">
+                    <form method="get" class="form-inline">
+                        <input type="hidden" name="page" value="home-admin">
+                        <select name="tahun" class="form-control form-control-sm" onchange="this.form.submit()">
+                            <?php foreach ($tahun_list as $th) { ?>
+                                <option value="<?= $th ?>" <?= ($th == $selected_year ? 'selected' : '') ?>><?= $th ?></option>
+                            <?php } ?>
+                        </select>
+                    </form>
+                </div>
             </div>
             <div class="card-body">
                 <canvas id="chartStatus" height="120"></canvas>

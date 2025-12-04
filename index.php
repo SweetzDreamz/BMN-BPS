@@ -422,6 +422,8 @@ $data_profil = mysqli_fetch_array($query_profil, MYSQLI_ASSOC);
                     case 'del_tiket_keluhan': include "admin/lihat-tiket-keluhan/del_tiket_keluhan.php"; break;
                     case 'add_data_bmn': include "admin/Kelola BMN/add_data_bmn.php"; break;
                     case 'del_data_bmn': include "admin/Kelola BMN/del_data_bmn.php"; break;
+                    case 'cetak_kartu_bmn': include "admin/cetak-kartu-bmn/cetak_kartu_bmn.php"; break;
+                    case 'export_kartu_bmn': include "admin/cetak-kartu-bmn/export_kartu_bmn.php"; break;
 
                     // ================ DEFAULT ====================
                     default:

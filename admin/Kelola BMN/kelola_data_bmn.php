@@ -62,6 +62,10 @@
                             ?>
                         </td>
                         <td>
+                            <a href="?page=cetak_kartu_bmn?kode=<?php echo $data['id_barang']; ?>" class="btn btn-info btn-sm">
+                            <i class="fas fa-id-card"></i>
+                            </a>
+
                             <a href="?page=edit_data_bmn&kode=<?php echo $data['id_barang']; ?>" 
                             class="btn btn-warning btn-sm">
                                 <i class="fa fa-edit"></i>
@@ -84,8 +88,8 @@
 				</tfoot>
 			</table>
 		</div>
-
 	</div>
+
         <div class="modal fade" id="modalKonfirmasiHapus" tabindex="-1" role="dialog" aria-labelledby="modalHapusLabel" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered" role="document">
             <div class="modal-content">
